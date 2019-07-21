@@ -184,7 +184,8 @@ public class Main {
                 break;
             }
         }
-    gi
+    }
+
     static void findCharactersPairs() {
         char A[] = {'a', 'a', 'a', 'a', 'b', 'f', 'c', 'f', 'b', 'b', 'c', 'c', 'c'};
 //        char A[] = {'e', 'a', 'c', 'd', 'a', 'a', 'a', 'b', 'b', 'b', 'c', 'c', 'c'};
