@@ -7,18 +7,28 @@ import java.util.Map;
 import java.util.Queue;
 
 public class Main {
+
+    final static char[] digits = {
+            '0', '1', '2', '3', '4', '5',
+            '6', '7', '8', '9', 'a', 'b',
+            'c', 'd', 'e', 'f', 'g', 'h',
+            'i', 'j', 'k', 'l', 'm', 'n',
+            'o', 'p', 'q', 'r', 's', 't',
+            'u', 'v', 'w', 'x', 'y', 'z'
+    };
+
     public static void main(String[] args) {
-        //int2Binary();
-        //swap();
+//        int2Binary();
+//        swap();
         //countPairs();
-//        countPairs1();
+        countPairs1();
 //        findSwapValues();
-//        findSwapValues1();
-        findCharactersPairs();
+        findSwapValues1();
+//        findCharactersPairs();
     }
 
     private static void int2Binary() {
-        int number = 10;
+        int number = 45;
         System.out.println(Integer.toBinaryString(number));
 
         StringBuilder builder = new StringBuilder();
@@ -27,6 +37,53 @@ public class Main {
             number /= 2;
         }
         System.out.println(builder.reverse());
+
+        number = 45;
+        boolean flag = false;
+        for (int i = 31; i >= 0; i--) {
+            int k = number >> i;
+            if ((k & 1) > 0) {
+                System.out.print("1");
+                flag = true;
+            } else if (flag) {
+                System.out.print("0");
+            }
+        }
+
+        for (int i = 1 << 31; i > 0; i = i / 2) {
+            if ((number & i) > 0) {
+                System.out.print("1");
+            } else {
+                System.out.print("0");
+            }
+        }
+
+        System.out.println();
+        System.out.println(toUnsignedString0(number, 1));
+    }
+
+    private static String toUnsignedString0(int val, int shift) {
+        // assert shift > 0 && shift <=5 : "Illegal shift value";
+        int mag = Integer.SIZE - Integer.numberOfLeadingZeros(val);
+        int chars = Math.max(((mag + (shift - 1)) / shift), 1);
+        char[] buf = new char[chars];
+
+        formatUnsignedInt(val, shift, buf, 0, chars);
+
+        // Use special constructor which takes over "buf".
+        return new String(buf);
+    }
+
+    static int formatUnsignedInt(int val, int shift, char[] buf, int offset, int len) {
+        int charPos = len;
+        int radix = 1 << shift;
+        int mask = radix - 1;
+        do {
+            buf[offset + --charPos] = digits[val & mask];
+            val >>>= shift;
+        } while (val != 0 && charPos > 0);
+
+        return charPos;
     }
 
     private static void swap() {
@@ -46,8 +103,8 @@ public class Main {
         x = x / y;
         System.out.println("[AFTER MULTIPLY] x = " + x + ", y = " + y);
 
-        x = 10;
-        y = 5;
+        x = Integer.MAX_VALUE;
+        y = Integer.MAX_VALUE-1;
         x = x ^ y;
         y = x ^ y;
         x = x ^ y;
@@ -109,7 +166,7 @@ public class Main {
 
                 // Every element can be part
                 // of at most one pair.
-                m.put(temp, m.get(A1[i]) - 1);
+                m.put(temp, m.get(temp) - 1);
             }
         }
 
@@ -127,8 +184,8 @@ public class Main {
 
     // Function to prints elements to be swapped
     static void findSwapValues() {
-        int A[] = {4, 1, 2, 1, 1, 2};
-        int B[] = {3, 6, 3, 3};
+        int A[] = {1, 1, 3, 4, 5, 6, 6};
+        int B[] = {1, 4, 4, 5, 7};
         int n = A.length, m = B.length;
 
         // Calculation of sums from both arrays
@@ -165,8 +222,8 @@ public class Main {
 
 
     static void findSwapValues1() {
-        int A[] = {4, 1, 2, 1, 1, 2};
-        int B[] = {3, 6, 3, 3};
+        int A[] = {1, 1, 3, 4, 5, 6, 6};
+        int B[] = {1, 4, 4, 5, 7};
         int n = A.length, m = B.length;
 
         HashSet<Integer> s = new HashSet<>();
